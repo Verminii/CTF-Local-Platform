@@ -3,5 +3,36 @@
 {% block title %}Home Page{% endblock %}
 
 {% block content %}
-    <p>This is a home page.</p>
+    <form method="post" id="loginForm">
+    {% csrf_token %}
+    <label for="username">Username: </label>
+    <input id="username" type="text" name="username" required>
+    <label for="password">Password: </label>
+    <input id="password" type="password" name="password" required>
+    <input type="submit" value="OK">
+</form>
+
+<div id="message"></div>
+
+<!-- Tutaj jest ajax do logowania do testu z rutowaniem, potem będzie trzeba to wszystko poprawnie porozdzielać po plikach-->
+<script>
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
+    e.preventDefault(); 
+    const form = e.target;
+    const formData = new FormData(form);
+
+    const response = await fetch('/login', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+        },
+        body: formData
+    });
+
+    const data = await response.json();
+    document.getElementById('message').innerText = data.message;
+    document.getElementById('username').value = '';
+    document.getElementById('password').value = '';
+});
+</script>
 {% endblock %}
