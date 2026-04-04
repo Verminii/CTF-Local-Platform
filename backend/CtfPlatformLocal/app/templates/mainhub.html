@@ -4,6 +4,47 @@
 
 {% block content %}
 
-<h1>Main Hub</h1>
+<h1>CTF Challenges</h1>
+
+<div class="challenges-list">
+    {% for challenge in challenges %}
+        <div class="challenge-card">
+            <h2><a href="{% url 'challenge_detail' challenge.folder_name %}">{{ challenge.title }}</a></h2>
+            <p>{{ challenge.description|truncatechars:100 }}</p>
+            <small>Created: {{ challenge.created_at|date:"M d, Y" }}</small>
+        </div>
+    {% empty %}
+        <p>No challenges available yet. Add some challenge folders to the storage directory and create Challenge objects in the admin.</p>
+    {% endfor %}
+</div>
+
+<style>
+.challenges-list {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.challenge-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.challenge-card h2 {
+    margin-top: 0;
+}
+
+.challenge-card h2 a {
+    text-decoration: none;
+    color: #007bff;
+}
+
+.challenge-card h2 a:hover {
+    text-decoration: underline;
+}
+</style>
 
 {% endblock %}
