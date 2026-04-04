@@ -3,7 +3,7 @@
 {% block title %}Home Page{% endblock %}
 
 {% block content %}
-    <form method="post" id="loginForm">
+<form method="post" id="loginForm">
     {% csrf_token %}
     <label for="username">Username: </label>
     <input id="username" type="text" name="username" required>
@@ -14,8 +14,20 @@
 
 <div id="message"></div>
 
+<form method="post" id="registerForm">
+    {% csrf_token %}
+    <label for="reg_username">Username: </label>
+    <input id="reg_username" type="text" name="username" required>
+    <label for="reg_password">Password: </label>
+    <input id="reg_password" type="password" name="password" required>
+    <input type="submit" value="Register">
+</form>
+
+<div id="message2"></div>
+
 <!-- Tutaj jest ajax do logowania do testu z rutowaniem, potem będzie trzeba to wszystko poprawnie porozdzielać po plikach-->
 <script>
+// Logowanie
 document.getElementById('loginForm').addEventListener('submit', async function(e) {
     e.preventDefault(); 
     const form = e.target;
@@ -30,9 +42,32 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     });
 
     const data = await response.json();
-    document.getElementById('message').innerText = data.message;
-    document.getElementById('username').value = '';
-    document.getElementById('password').value = '';
+    if (data.message === "Login successful!") {
+        window.location.href = data.redirect;
+    } else {
+        document.getElementById('message').innerText = data.message;
+        document.getElementById('username').value = '';
+        document.getElementById('password').value = '';
+    }
 });
+
+// Rejestracja
+document.getElementById('registerForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+    const response = await fetch('/register', {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+        },
+        body: formData
+    });
+    const data = await response.json();
+    document.getElementById('message2').innerText = data.message;
+    document.getElementById('reg_username').value = '';
+    document.getElementById('reg_password').value = '';
+});
+
 </script>
 {% endblock %}
