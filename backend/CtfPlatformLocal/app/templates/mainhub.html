@@ -25,7 +25,7 @@
       </h2>
 
       <p class="challenge-description">
-        {{ challenge.description|truncatechars:140 }}
+        {{ challenge.short_description|truncatechars:140 }}
       </p>
 
       <div class="challenge-actions">
@@ -43,4 +43,4 @@
     </div>
   {% endfor %}
 </div>
-{% endblock %}i
+{% endblock %}

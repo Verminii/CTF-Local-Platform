@@ -80,8 +80,13 @@ def scan_storage_and_sync_challenges():
 def mainhub(request):
     scan_storage_and_sync_challenges()
     challenges = Challenge.objects.all().order_by('id')
-    return render(request, 'mainhub.html', {'challenges': challenges})
 
+    for challenge in challenges:
+        challenge_path = CHALLENGE_STORAGE / challenge.folder_name
+        short_description_path = challenge_path / 'short_description.txt'
+        challenge.short_description = read_text_file(short_description_path) or challenge.description
+
+    return render(request, 'mainhub.html', {'challenges': challenges})
 
 @login_required
 def challenge_detail(request, folder_name):
@@ -96,6 +101,8 @@ def challenge_detail(request, folder_name):
 
     description_path = challenge_path / 'description.txt'
     flag_path = challenge_path / 'flag' / 'flag.txt'
+    short_description_path = challenge_path / 'short_description.txt'
+    short_description = read_text_file(short_description_path)
     resources_dir = challenge_path / 'resources'
     hints_dir = challenge_path / 'hints'
 
@@ -124,6 +131,7 @@ def challenge_detail(request, folder_name):
     return render(request, 'challenge_detail.html', {
         'challenge': challenge,
         'description_text': description,
+        'short_description': short_description,
         'files': files,
         'hints': hints,
     })
