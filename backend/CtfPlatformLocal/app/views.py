@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from pathlib import Path
 from django.contrib.auth import logout
+import requests
 
 CHALLENGE_STORAGE = Path(settings.MEDIA_ROOT)
 
@@ -99,6 +100,10 @@ def challenge_detail(request, folder_name):
     if not challenge_path.exists():
         raise Http404("Challenge folder not found")
 
+    # Check if challenge has Docker setup
+    docker_dir = challenge_path / 'docker'
+    challenge_has_docker = docker_dir.exists()
+
     description_path = challenge_path / 'description.txt'
     flag_path = challenge_path / 'flag' / 'flag.txt'
     short_description_path = challenge_path / 'short_description.txt'
@@ -134,7 +139,34 @@ def challenge_detail(request, folder_name):
         'short_description': short_description,
         'files': files,
         'hints': hints,
+        'challenge_has_docker': challenge_has_docker,
     })
+
+
+@login_required
+def start_challenge(request, folder_name):
+
+    if request.method != 'POST':
+        return JsonResponse({'message': 'Invalid method.'}, status=405)
+
+    try:
+        challenge = Challenge.objects.get(folder_name=folder_name)
+    except Challenge.DoesNotExist:
+        raise Http404('Challenge not found')
+
+    challenge_path = CHALLENGE_STORAGE / folder_name
+    if not (challenge_path / 'docker').exists():
+        return JsonResponse({'error': 'Challenge has no Docker setup.'}, status=400)
+
+    try:
+        response = requests.post(
+            'http://orchestrator:5000/start_challenge',
+            json={'challenge_name': folder_name},
+            timeout=30
+        )
+        return JsonResponse(response.json(), status=response.status_code)
+    except requests.RequestException as e:
+        return JsonResponse({'error': 'Orchestrator unavailable.', 'details': str(e)}, status=503)
 
 
 @login_required
