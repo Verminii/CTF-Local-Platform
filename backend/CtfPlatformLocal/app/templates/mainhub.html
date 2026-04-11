@@ -4,7 +4,7 @@
 
 {% block content %}
 <section class="page-header">
-  <p class="eyebrow">Kasztanki Facility</p>
+  <p class="eyebrow">Kasztanek Corporation</p>
   <h1>CTF Challenges</h1>
   <p class="page-subtitle">
     Select a challenge and investigate the available files.
@@ -15,8 +15,7 @@
   {% for challenge in challenges %}
     <article class="panel challenge-card">
       <div class="challenge-meta">
-        <span class="challenge-tag">Available</span>
-        <small>Created: {{ challenge.created_at|date:"M d, Y" }}</small>
+        <span class="challenge-tag">Challenge {{ forloop.counter }}</span>
       </div>
 
       <h2 class="challenge-title">
@@ -39,9 +38,9 @@
     <div class="panel empty-state">
       <h2>No challenges available</h2>
       <p>
-        Add challenge folders to the storage directory and create Challenge objects in the admin panel.
+        Add challenge folders to the storage directory.
       </p>
     </div>
   {% endfor %}
 </div>
-{% endblock %}
+{% endblock %}i

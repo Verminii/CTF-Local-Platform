@@ -18,15 +18,25 @@
           aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-
         <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
+          <ul class="navbar-nav ml-auto align-items-lg-center">
+            <li class="nav-item mr-lg-3">
               <a class="nav-link" href="{% url 'mainhub' %}">Challenges</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item mr-lg-3">
               <a class="nav-link" href="{% url 'home' %}">Access Panel</a>
             </li>
+
+          {% if user.is_authenticated %}
+            <li class="nav-item">
+              <span class="navbar-user-badge">
+                Logged in as <strong>{{ user.username }}</strong>
+              </span>
+            </li>
+            <li class="nav-item ml-lg-2">
+              <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+            </li>
+           {% endif %}
           </ul>
         </div>
       </div>

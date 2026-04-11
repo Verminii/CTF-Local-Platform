@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}404{% endblock %}
+
+{% block content %}
+<section class="page-header">
+  <p class="eyebrow">Warning</p>
+  <h1>You're lost?</h1>
+  <p class="page-subtitle">
+    It's dangerous here...
+  </p>
+</section>
+
+<div class="panel" style="text-align:center;">
+  <p style="margin-bottom: 1.5rem;">
+    The page you are looking for does not exist or has been moved.
+  </p>
+  <a href="{% url 'home' %}" class="btn-re btn-re-primary">Return Home</a>
+</div>
+{% endblock %}

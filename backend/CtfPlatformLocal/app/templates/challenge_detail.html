@@ -3,38 +3,67 @@
 {% block title %}{{ challenge.title }}{% endblock %}
 
 {% block content %}
+<div class="challenge-topbar">
+  <a href="{% url 'mainhub' %}" class="btn-re btn-re-back">← Back to Challenges</a>
+</div>
+
 <section class="page-header">
   <p class="eyebrow">Challenge File System</p>
   <h1>{{ challenge.title }}</h1>
   <p class="page-subtitle">
-    {{ challenge.description }}
+    {{ description_text }}
   </p>
 </section>
 
 <div class="detail-layout">
   <section class="panel detail-panel">
     <div class="panel-header">
-      <h2>Challenge Files</h2>
-      <p>Text files exposed by the system.</p>
+      <h2>Hints</h2>
+      <p>Click to reveal each hint.</p>
     </div>
 
-    {% for text_file in text_files %}
-      <div class="text-file-section">
-        <div class="text-file-header">
-          <h3>{{ text_file.name }}</h3>
-        </div>
-        <div class="text-content">
-          <pre>{{ text_file.content }}</pre>
-        </div>
+    <div class="hints-grid">
+      {% for hint in hints %}
+        <button
+          type="button"
+          class="btn-re btn-re-secondary hint-btn"
+          data-toggle="modal"
+          data-target="#hintModal{{ hint.id }}"
+        >
+          {{ hint.title }}
+        </button>
+      {% empty %}
+        <p class="empty-inline">No hints available.</p>
+      {% endfor %}
+    </div>
+
+    <div class="panel-header" style="margin-top: 1.25rem;">
+      <h2>Submit Flag</h2>
+      <p>Enter the flag you found.</p>
+    </div>
+
+    <form method="post" class="flag-form" id="flagForm" action="{% url 'submit_flag' challenge.folder_name %}">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="flagInput">Flag</label>
+        <input
+          type="text"
+          id="flagInput"
+          name="flag"
+          placeholder="CTF{...}"
+          autocomplete="off"
+          required
+        >
       </div>
-    {% empty %}
-      <p class="empty-inline">No text files found in this challenge folder.</p>
-    {% endfor %}
+      <button type="submit" class="btn-re btn-re-primary">Submit Flag</button>
+    </form>
+
+    <div id="flagResult" class="form-message"></div>
   </section>
 
   <section class="panel detail-panel">
     <div class="panel-header">
-      <h2>All Files</h2>
+      <h2>Resources</h2>
       <p>Download available assets.</p>
     </div>
 
@@ -45,16 +74,66 @@
             <span class="file-name">{{ file.name }}</span>
             <span class="file-size">{{ file.size|filesizeformat }}</span>
           </div>
-          <a href="{% url 'download_file' challenge.folder_name file.path %}" class="btn-re btn-re-secondary">
+          <a href="{% url 'download_file' challenge.folder_name file.path %}" class="btn-re btn-re-primary">
             Download
           </a>
         </div>
       {% empty %}
-        <p class="empty-inline">No files found in this challenge folder.</p>
+        <p class="empty-inline">No resource files found in this challenge folder.</p>
       {% endfor %}
     </div>
-
-    <a href="{% url 'mainhub' %}" class="btn-re btn-re-back">← Back to Challenges</a>
   </section>
 </div>
+
+{% for hint in hints %}
+<div class="modal fade" id="hintModal{{ hint.id }}" tabindex="-1" role="dialog" aria-labelledby="hintModalLabel{{ hint.id }}" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content re-modal">
+      <div class="modal-header">
+        <h5 class="modal-title" id="hintModalLabel{{ hint.id }}">{{ hint.title }}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre class="hint-content">{{ hint.content }}</pre>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+<script>
+document.querySelectorAll('.hint-btn').forEach(btn => {
+  btn.addEventListener('click', function () {
+    this.classList.add('hint-btn-used');
+  });
+});
+
+document.getElementById('flagForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const form = e.target;
+  const formData = new FormData(form);
+
+  const response = await fetch(form.action, {
+    method: 'POST',
+    headers: {
+      'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+    },
+    body: formData
+  });
+
+  const data = await response.json();
+  const result = document.getElementById('flagResult');
+  result.innerText = data.message;
+
+  if (data.message === 'Correct flag!') {
+    result.style.color = '#39a96b';
+  } else {
+    result.style.color = '#d4a02d';
+  }
+
+  document.getElementById('flagInput').value = '';
+});
+</script>
 {% endblock %}

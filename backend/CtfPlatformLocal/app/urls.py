@@ -8,5 +8,9 @@ urlpatterns = [
     path('register', views.register, name='register'),
     path('mainhub/', views.mainhub, name='mainhub'),
     path('challenge/<str:folder_name>/', views.challenge_detail, name='challenge_detail'),
+    path('challenge/<str:folder_name>/submit-flag/', views.submit_flag, name='submit_flag'),
     path('challenge/<str:folder_name>/download/<path:file_path>/', views.download_file, name='download_file'),
+    path('logout/', views.user_logout, name='logout'),
 ]
+
+handler404 = 'app.views.custom_404'
