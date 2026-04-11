@@ -3,134 +3,58 @@
 {% block title %}{{ challenge.title }}{% endblock %}
 
 {% block content %}
+<section class="page-header">
+  <p class="eyebrow">Challenge File System</p>
+  <h1>{{ challenge.title }}</h1>
+  <p class="page-subtitle">
+    {{ challenge.description }}
+  </p>
+</section>
 
-<h1>{{ challenge.title }}</h1>
-<p>{{ challenge.description }}</p>
-
-<hr>
-
-<h2>Challenge Files</h2>
-
-<!-- Display text files -->
-{% for text_file in text_files %}
-<div class="text-file-section">
-    <h3>{{ text_file.name }}</h3>
-    <div class="text-content">
-        <pre>{{ text_file.content }}</pre>
+<div class="detail-layout">
+  <section class="panel detail-panel">
+    <div class="panel-header">
+      <h2>Challenge Files</h2>
+      <p>Text files exposed by the system.</p>
     </div>
-</div>
-{% endfor %}
 
-<!-- List all files with download links -->
-<h2>All Files</h2>
-<div class="files-list">
-    {% for file in files %}
-        <div class="file-item">
-            <span class="file-name">{{ file.name }}</span>
-            <span class="file-size">({{ file.size|filesizeformat }})</span>
-            <a href="{% url 'download_file' challenge.folder_name file.path %}" class="download-btn">Download</a>
+    {% for text_file in text_files %}
+      <div class="text-file-section">
+        <div class="text-file-header">
+          <h3>{{ text_file.name }}</h3>
         </div>
+        <div class="text-content">
+          <pre>{{ text_file.content }}</pre>
+        </div>
+      </div>
     {% empty %}
-        <p>No files found in this challenge folder.</p>
+      <p class="empty-inline">No text files found in this challenge folder.</p>
     {% endfor %}
+  </section>
+
+  <section class="panel detail-panel">
+    <div class="panel-header">
+      <h2>All Files</h2>
+      <p>Download available assets.</p>
+    </div>
+
+    <div class="files-list">
+      {% for file in files %}
+        <div class="file-item">
+          <div class="file-info">
+            <span class="file-name">{{ file.name }}</span>
+            <span class="file-size">{{ file.size|filesizeformat }}</span>
+          </div>
+          <a href="{% url 'download_file' challenge.folder_name file.path %}" class="btn-re btn-re-secondary">
+            Download
+          </a>
+        </div>
+      {% empty %}
+        <p class="empty-inline">No files found in this challenge folder.</p>
+      {% endfor %}
+    </div>
+
+    <a href="{% url 'mainhub' %}" class="btn-re btn-re-back">← Back to Challenges</a>
+  </section>
 </div>
-
-<a href="{% url 'mainhub' %}" class="back-btn">← Back to Challenges</a>
-
-<style>
-.text-file-section {
-    margin-bottom: 30px;
-    border: 1px solid #eee;
-    border-radius: 8px;
-    padding: 20px;
-    background: #f9f9f9;
-}
-
-.text-file-section h3 {
-    margin-top: 0;
-    color: #333;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 10px;
-}
-
-.text-content {
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 15px;
-    overflow-x: auto;
-    max-height: 400px;
-    overflow-y: auto;
-}
-
-.text-content pre {
-    margin: 0;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    font-family: 'Courier New', monospace;
-    font-size: 14px;
-    line-height: 1.4;
-}
-
-.files-list {
-    margin-bottom: 30px;
-}
-
-.file-item {
-    display: flex;
-    align-items: center;
-    padding: 10px 15px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-bottom: 8px;
-    background: white;
-}
-
-.file-item:hover {
-    background: #f8f9fa;
-}
-
-.file-name {
-    flex-grow: 1;
-    font-weight: 500;
-}
-
-.file-size {
-    color: #666;
-    margin-right: 15px;
-    font-size: 0.9em;
-}
-
-.download-btn {
-    background: #007bff;
-    color: white;
-    padding: 6px 12px;
-    text-decoration: none;
-    border-radius: 4px;
-    font-size: 0.9em;
-}
-
-.download-btn:hover {
-    background: #0056b3;
-    text-decoration: none;
-    color: white;
-}
-
-.back-btn {
-    display: inline-block;
-    background: #6c757d;
-    color: white;
-    padding: 10px 20px;
-    text-decoration: none;
-    border-radius: 4px;
-    margin-top: 20px;
-}
-
-.back-btn:hover {
-    background: #545b62;
-    text-decoration: none;
-    color: white;
-}
-</style>
-
 {% endblock %}
