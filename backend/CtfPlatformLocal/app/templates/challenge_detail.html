@@ -133,17 +133,45 @@ if (document.getElementById('startChallengeBtn')) {
     this.disabled = true;
     this.innerText = 'Starting...';
     console.log('Starting challenge...');
-    console.log('Form action URL:', this.formAction);
+    const formAction = this.closest('form').action;
+    console.log('Form action URL:', formAction);
 
-    const response = await fetch(this.formAction, {
+    console.log(formAction);
+
+    const response = await fetch(formAction, {
       method: 'POST',
       headers: {
         'X-CSRFToken': getCookie('csrftoken')
       }
     });
 
+    const data = await response.json();
+
     if (response.ok) {
-      this.innerText = 'Challenge Started on Port ' + (await response.json()).port;
+      this.innerText = 'Challenge Started on Port ' + data.port;
+      
+      let timeLeft = 15 * 60;
+
+      if (window.localStorage.getItem('challengeStarted')) {
+        timeLeft = window.localStorage.getItem('challengeStarted');
+      }else {
+        window.localStorage.setItem('challengeStarted', timeLeft);
+      }
+      
+      const originalText = this.innerText;
+      const timerInterval = setInterval(() => {
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          this.innerText = originalText + ' (Expired)';
+          this.disabled = true;
+        } else {
+          const minutes = Math.floor(timeLeft / 60);
+          const seconds = timeLeft % 60;
+          this.innerText = `${originalText} - Time Left: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+          timeLeft--;
+          window.localStorage.setItem('challengeStarted', timeLeft);
+        }
+      }, 1000);
     } else {
       this.innerText = 'Start Challenge';
       this.disabled = false;

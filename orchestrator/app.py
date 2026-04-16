@@ -4,6 +4,7 @@ import os
 import threading
 import time
 from apscheduler.schedulers.background import BackgroundScheduler
+import atexit
 
 app = Flask(__name__)
 

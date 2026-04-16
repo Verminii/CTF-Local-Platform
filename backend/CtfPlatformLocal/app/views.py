@@ -146,6 +146,8 @@ def challenge_detail(request, folder_name):
 @login_required
 def start_challenge(request, folder_name):
 
+    print("Starting challenge:", folder_name)
+
     if request.method != 'POST':
         return JsonResponse({'message': 'Invalid method.'}, status=405)
 
