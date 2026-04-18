@@ -10,27 +10,26 @@
 <section class="page-header">
   <p class="eyebrow">Challenge File System</p>
   <h1>{{ challenge.title }}</h1>
-  <p class="page-subtitle">
-    {{ description_text }}
-  </p>
+  <p class="page-subtitle">{{ description_text }}</p>
 </section>
 
 <div class="detail-layout">
   <section class="panel detail-panel">
     <div class="panel-header">
       <h2>Hints</h2>
-      <p>Click to reveal each hint.</p>
+      <p>Click a hint to open it. Use it to reveal the content.</p>
     </div>
 
     <div class="hints-grid">
       {% for hint in hints %}
         <button
           type="button"
-          class="btn-re btn-re-secondary hint-btn"
+          class="btn-re hint-btn {% if hint.id in used_hint_ids %}hint-btn-used{% endif %}"
           data-toggle="modal"
           data-target="#hintModal{{ hint.id }}"
+          data-hint-id="{{ hint.id }}"
         >
-          {{ hint.title }}
+          Hint {{ forloop.counter }}{% if hint.cost %} (Cost: {{ hint.cost }}){% endif %}
         </button>
       {% empty %}
         <p class="empty-inline">No hints available.</p>
@@ -90,23 +89,84 @@
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content re-modal">
       <div class="modal-header">
-        <h5 class="modal-title" id="hintModalLabel{{ hint.id }}">{{ hint.title }}</h5>
+        <h5 class="modal-title" id="hintModalLabel{{ hint.id }}">Hint {{ forloop.counter }}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+
       <div class="modal-body">
-        <pre class="hint-content">{{ hint.content }}</pre>
+        <p class="hint-cost">Cost: {{ hint.cost }}</p>
+
+        <div id="hintLocked{{ hint.id }}">
+          {% if hint.id in used_hint_ids %}
+            <pre class="hint-content">{{ hint.hint }}</pre>
+          {% else %}
+            <button
+              type="button"
+              class="btn-re btn-re-primary use-hint-btn"
+              data-hint-id="{{ hint.id }}"
+            >
+              Use hint? (Cost: {{ hint.cost }})
+            </button>
+          {% endif %}
+        </div>
+
+        <div id="hintContent{{ hint.id }}" style="{% if hint.id in used_hint_ids %}display:block;{% else %}display:none;{% endif %}; margin-top: 1rem;">
+          <pre class="hint-content">{{ hint.hint }}</pre>
+        </div>
       </div>
     </div>
   </div>
 </div>
 {% endfor %}
 
+<style>
+.hint-btn-used {
+  background: #39a96b !important;
+  border-color: #39a96b !important;
+  color: #fff !important;
+}
+</style>
+
 <script>
-document.querySelectorAll('.hint-btn').forEach(btn => {
-  btn.addEventListener('click', function () {
-    this.classList.add('hint-btn-used');
+function getCsrfToken() {
+  return document.querySelector('[name=csrfmiddlewaretoken]').value;
+}
+
+document.querySelectorAll('.use-hint-btn').forEach(btn => {
+  btn.addEventListener('click', async function () {
+    const hintId = this.dataset.hintId;
+
+    const response = await fetch(`/hint/${hintId}/use/`, {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: {
+        'X-CSRFToken': getCsrfToken()
+      }
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      const hintBtn = document.querySelector(`.hint-btn[data-hint-id="${hintId}"]`);
+      const lockedBox = document.getElementById(`hintLocked${hintId}`);
+      const contentBox = document.getElementById(`hintContent${hintId}`);
+
+      if (hintBtn) {
+        hintBtn.classList.add('hint-btn-used');
+      }
+
+      if (lockedBox) {
+        lockedBox.innerHTML = '';
+      }
+
+      if (contentBox) {
+        contentBox.style.display = 'block';
+        contentBox.innerHTML = '<pre class="hint-content"></pre>';
+        contentBox.querySelector('pre').innerText = data.hint;
+      }
+    }
   });
 });
 
@@ -117,6 +177,7 @@ document.getElementById('flagForm').addEventListener('submit', async function(e)
 
   const response = await fetch(form.action, {
     method: 'POST',
+    credentials: 'same-origin',
     headers: {
       'X-CSRFToken': formData.get('csrfmiddlewaretoken')
     },
@@ -126,12 +187,7 @@ document.getElementById('flagForm').addEventListener('submit', async function(e)
   const data = await response.json();
   const result = document.getElementById('flagResult');
   result.innerText = data.message;
-
-  if (data.message === 'Correct flag!') {
-    result.style.color = '#39a96b';
-  } else {
-    result.style.color = '#d4a02d';
-  }
+  result.style.color = data.success ? '#39a96b' : '#d4a02d';
 
   document.getElementById('flagInput').value = '';
 });

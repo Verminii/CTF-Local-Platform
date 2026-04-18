@@ -11,6 +11,7 @@ urlpatterns = [
     path('challenge/<str:folder_name>/submit-flag/', views.submit_flag, name='submit_flag'),
     path('challenge/<str:folder_name>/download/<path:file_path>/', views.download_file, name='download_file'),
     path('logout/', views.user_logout, name='logout'),
+    path('hint/<int:hint_id>/use/', views.use_hint, name='use_hint'),
 ]
 
 handler404 = 'app.views.custom_404'
