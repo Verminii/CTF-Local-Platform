@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from django.db.models import Sum
 from django.http import JsonResponse, Http404, FileResponse
 from django.shortcuts import render, redirect
+from django.db.models import Sum
 
 from .models import (
     ToDoItem,
@@ -300,3 +301,26 @@ def custom_404(request, exception):
 def todos(request):
     items = ToDoItem.objects.all()
     return render(request, 'todos.html', {'todo_items': items})
+
+
+@login_required
+def scoreboard(request):
+    standings = (
+        User.objects.annotate(
+            total_points=Sum('challenge_completions__points_awarded')
+        )
+        .filter(total_points__gt=0)
+        .order_by('-total_points', 'username')
+    )
+
+    rows = []
+    for idx, user in enumerate(standings, start=1):
+        rows.append({
+            'place': idx,
+            'nickname': user.username,
+            'points': user.total_points,
+        })
+
+    return render(request, 'scoreboard.html', {
+        'rows': rows,
+    })
