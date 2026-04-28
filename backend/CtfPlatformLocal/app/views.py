@@ -159,14 +159,31 @@ def start_challenge(request, folder_name):
     challenge_path = CHALLENGE_STORAGE / folder_name
     if not (challenge_path / 'docker').exists():
         return JsonResponse({'error': 'Challenge has no Docker setup.'}, status=400)
+    
+    username = request.user.username
+    print('start_challenge: user=', username, 'challenge=', folder_name)
+
+    try:
+        response = requests.post(
+            'http://orchestrator:5000/initialize_challenge',
+            json={'challenge_name': folder_name},
+            timeout=30
+        )
+        response_data = response.json()
+        print('orchestrator response:', response.status_code, response_data)
+    except requests.RequestException as e:
+        print('orchestrator request failed:', str(e))
+        return JsonResponse({'error': 'Orchestrator unavailable.', 'details': str(e)}, status=503)
 
     try:
         response = requests.post(
             'http://orchestrator:5000/start_challenge',
-            json={'challenge_name': folder_name},
+            json={'challenge_name': folder_name, 'user': username},
             timeout=30
         )
-        return JsonResponse(response.json(), status=response.status_code)
+        response_data = response.json()
+        print('orchestrator response:', response.status_code, response_data)
+        return JsonResponse(response_data, status=response.status_code)
     except requests.RequestException as e:
         return JsonResponse({'error': 'Orchestrator unavailable.', 'details': str(e)}, status=503)
 

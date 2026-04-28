@@ -1,7 +1,7 @@
-FROM python:3.11-slim
+FROM php:8.1-cli
+WORKDIR /app
 
-WORKDIR /challenge
-COPY resources /challenge
+COPY docker /app
 
 EXPOSE 80
-CMD ["python3", "-m", "http.server", "80"]
+CMD ["php", "-S", "0.0.0.0:80"]

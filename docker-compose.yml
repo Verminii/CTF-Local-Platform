@@ -9,6 +9,8 @@ services:
       - .:/app
     depends_on:
       - orchestrator
+    environment:
+      - PYTHONUNBUFFERED=1
 
   orchestrator:
     build: ./orchestrator

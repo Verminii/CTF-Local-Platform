@@ -1,0 +1,218 @@
+/* Re-Forum - ciemne, czytelne stylinng forum (neutralne, bez klas zależnych od nicku) */
+
+* {
+  box-sizing: border-box;
+}
+
+body.re-theme {
+  background: #111;
+  color: #ddd;
+  font-family: "Segoe UI", Roboto, sans-serif;
+  margin: 0;
+  line-height: 1.5;
+  padding: 0 1rem 1.5rem 1rem;
+}
+
+/* Górny pasek */
+.top-bar {
+  background: #1a1a1a;
+  border-bottom: 1px solid #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.7rem 1.2rem;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
+}
+
+.top-bar h1 {
+  margin: 0;
+  font-size: 1.4rem;
+  color: #fff;
+  font-weight: 600;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+/* Linki / przyciski nawigacji */
+.nav-btn {
+  color: #fff;
+  background: #b00;
+  border: 1px solid #900;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.nav-btn:hover {
+  background: #c00;
+  border-color: #a00;
+}
+
+.nav-logout {
+  background: #555;
+  border-color: #444;
+}
+
+.nav-logout:hover {
+  background: #666;
+}
+
+/* Lista postów */
+.post-list {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+/* Główny artykuł / post (neutralny, bez klas typu re-leon itd.) */
+.post {
+  background: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
+}
+
+/* Autor posta – bez wyróżnień zależnych od nicku */
+.post-author {
+  font-weight: 600;
+  color: #eee;
+  margin-bottom: 0.2rem;
+  font-size: 1.02rem;
+  letter-spacing: 0.2px;
+}
+
+/* Timestamp */
+time {
+  font-size: 0.85rem;
+  color: #aaa;
+  display: block;
+  margin: 0.4rem 0 0.6rem 0;
+}
+
+/* Treść posta */
+.post-content {
+  color: #ddd;
+}
+
+.post-content p {
+  margin: 0.5rem 0;
+}
+
+/* Wyróżnienie „botów” (opcjonalne, tylko typograficzne, nie kolorowe) */
+.bot-author {
+  opacity: 0.9;
+  font-style: normal;
+}
+
+/* Formularze: login i tworzenie posta */
+.login-box,
+.create-post-form {
+  background: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 2rem;
+  max-width: 440px;
+  margin: 2.5rem auto;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+.login-box h1,
+.create-post-form h1 {
+  color: #fff;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+/* Pola tekstowe i textarea */
+input[type="text"],
+input[type="password"],
+textarea {
+  width: 100%;
+  padding: 0.6rem;
+  margin: 0.4rem 0;
+  border: 1px solid #444;
+  border-radius: 4px;
+  background: #2a2a2a;
+  color: #fff;
+  font-size: 0.95rem;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+textarea:focus {
+  outline: none;
+  border-color: #b00;
+  box-shadow: 0 0 0 2px rgba(187, 0, 0, 0.35);
+}
+
+/* Przyciski */
+button,
+.login-box button,
+.create-post-form button {
+  background: #b00;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.6rem 1rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+button:hover,
+.login-box button:hover,
+.create-post-form button:hover {
+  background: #c00;
+}
+
+/* Komunikat błędu */
+.login-box p,
+.create-post-form p {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+  color: #ff7a7a;
+}
+
+/* Subtelne wykończenie: okrągłe krawędzie, delikatne cienie, odpowiednia wysokość linii */
+body, input, textarea, button {
+  line-height: 1.45;
+}
+
+/* Media query dla mniejszych ekranów */
+@media (max-width: 600px) {
+  .top-bar {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .nav-links {
+    width: 100%;
+    justify-content: center;
+  }
+  .post-list {
+    margin: 1.5rem auto;
+    padding: 0 1rem;
+  }
+}
+
+
+
+.create-post-form textarea {
+  min-height: 220px;
+  resize: vertical; /* pozwala userowi w razie czego samemu zmienić wysokość */
+}
+
+
+.edit-desc-form textarea {
+  min-height: 220px;
+  resize: vertical;
+}
