@@ -1,1 +1,0 @@
-print('Hello, CTF player!')

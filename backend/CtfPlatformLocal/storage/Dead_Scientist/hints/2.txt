@@ -1,0 +1,2 @@
+10
+You've extracted a Python file. Open it- either run cat terminal.py | less in terminal or view it in any text editor. Read the code carefully. There's an encoded string inside. Figure out what it represents.

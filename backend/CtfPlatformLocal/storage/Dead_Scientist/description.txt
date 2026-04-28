@@ -1,0 +1,41 @@
+INVESTIGATOR BRIEFING
+
+Dr. Morozov had access to a classified terminal containing
+credentials to an encrypted transmission. The contents of that
+transmission may reveal what really happened inside Lab Six.
+
+You have been granted temporary access to his workstation.
+Only the files listed above remain.
+
+Start by examining what's in front of you.
+Metadata can tell you more than you'd expect-
+tool like exiftool is a good first step
+before diving deeper.
+
+Recover the hidden message.
+
+===============================================================
+  UMBRELLA CORPORATION- RESTRICTED WORKSTATION ACCESS
+  Authorization Level: EXTERNAL INVESTIGATOR
+===============================================================
+
+Dr. Viktor Morozov, Senior Researcher- Laboratory Six
+Status: MISSING since 2024-11-17
+Last login: 2024-11-17 03:14:15
+
+---------------------------------------------------------------
+
+Files on this workstation:
+
+  lab_photo.png   -last photograph recovered from Dr. Morozov's
+                    terminal session
+
+  stage2.enc      -encrypted system file, proprietary LabOS format.
+                    WARNING: this is an internal Recovery Utility
+                    component. Do not attempt to open, modify or
+                    decode it manually. Tampering with system files
+                    may cause data corruption and loss of evidence.
+
+===============================================================
+  UMBRELLA CORPORATION-  "OUR BUSINESS IS LIFE ITSELF"
+===============================================================

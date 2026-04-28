@@ -1,0 +1,1 @@
+flag{NEW_BEGGING}

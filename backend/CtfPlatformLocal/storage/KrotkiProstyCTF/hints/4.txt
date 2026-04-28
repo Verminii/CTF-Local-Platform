@@ -1,0 +1,2 @@
+5
+To powinien być ciąg HEX, ale zaraz, coś tu jest nie tak. Może trzeba się bliżej przyjżeć tej wiadomości.

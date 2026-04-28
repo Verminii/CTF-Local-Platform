@@ -1,0 +1,3 @@
+5
+The image is not just an image. Look at what's hidden in the least significant bits of the color channels. Try:
+zsteg -E b1,rgb,lsb,xy lab_photo.png > terminal.py

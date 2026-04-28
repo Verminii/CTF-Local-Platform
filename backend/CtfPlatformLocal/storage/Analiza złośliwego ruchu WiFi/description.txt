@@ -1,0 +1,15 @@
+Analiza złośliwego ruchu WiFi
+
+Otrzymano zgłoszenie, że jedno z urządzeń zakłóca działanie sieci WiFi. 
+Na podstawie danych zawartych w pliku capture.pcapng rozwiąż poniższe zadania, aby uzyskać flagę.
+
+Flaga ma postać:
+flag{X_Y_A_B_C_Z}
+
+Przykład:
+flag{Korek_7777_THIS_IS_FLAG_FREE_WIFI}
+
+Wszystkie elementy flagi należy uzyskać poprzez rozwiązanie kolejnych zadań znajdujących się w pliku ZADANIE_CTF.docx.
+
+W przypadku problemów dostępne są 4 podpowiedzi — każda przypisana do odpowiedniej części zadania:
+1-a, 2-b, 3-c, 4-d.

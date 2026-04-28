@@ -1,0 +1,2 @@
+5
+Spróbuj wykorzystać swój token do znalezienia pepper-a nie powinno potrwać długo GPU jest szybkie
