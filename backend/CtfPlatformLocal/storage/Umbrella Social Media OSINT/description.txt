@@ -1,0 +1,6 @@
+A security incident has occurred at one of Umbrella Corporation's facilities. 
+Your mission is to identify the culprit and access their private archives. 
+We have provided you with all the necessary materials. 
+Remember, all your actions must remain confidential. 
+
+Good luck.

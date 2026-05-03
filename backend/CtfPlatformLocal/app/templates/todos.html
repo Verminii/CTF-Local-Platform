@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Home Page{% endblock %}
+
+{% block content %}
+    <h1>To do list</h1>
+    <ul>
+        {% for item in todo_items %}
+            <li>{{ item.title }} - {{ item.completed }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

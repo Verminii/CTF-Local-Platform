@@ -1,0 +1,2 @@
+Zalogowałeś się do wewnętrznego portalu firmy TechCorp.
+Spróbuj obejść mechanizm autoryzacji i uzyskać dostęp administratorski.

@@ -1,0 +1,15 @@
+Prosty kilkuetapowy ctf opierający się o podstawy analizy ruchu sieciowego, kryptografii oraz steganografii.
+
+Flaga jest w formacie:
+
+flag{XXX}
+
+gdzie ‘XXX’ – wartość flagi.
+
+Należy rozwiązywać po kolei od etapu 1 do 4.
+
+Hinty:
+Etap 1: hint 1, 2, 3
+Etap 2: hint 4
+Etap 3: hint 5, 6
+Etap 4: hint 7

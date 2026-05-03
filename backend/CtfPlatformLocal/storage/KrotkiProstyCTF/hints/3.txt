@@ -1,0 +1,2 @@
+5
+Zwyczajne pakiety ICMP nie powinny być tak duże, prawda?

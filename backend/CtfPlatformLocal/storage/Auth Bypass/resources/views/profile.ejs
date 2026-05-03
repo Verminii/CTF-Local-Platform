@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Profil | TechCorp Intranet</title>
+  <style>
+    body { 
+      font-family: 'Segoe UI', Arial, sans-serif; 
+      background: #f4f6f9; 
+      margin: 0; 
+      padding: 0; 
+    }
+    .header {
+      background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo { font-size: 24px; font-weight: bold; }
+    .nav a {
+      color: white;
+      margin-left: 25px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .nav a:hover { text-decoration: underline; }
+
+    .container { 
+      max-width: 1100px; 
+      margin: 30px auto; 
+      background: white; 
+      border-radius: 10px; 
+      box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+    .main-content { padding: 40px; display: flex; gap: 40px; }
+
+    .sidebar {
+      width: 280px;
+      background: #f8fafc;
+      padding: 25px;
+      border-right: 1px solid #e2e8f0;
+    }
+    .profile-info {
+      flex: 1;
+    }
+    .card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 25px;
+    }
+    .welcome {
+      font-size: 28px;
+      color: #1e40af;
+      margin: 0 0 8px 0;
+    }
+    .info-box {
+      background: #f0f9ff;
+      border-left: 5px solid #3b82f6;
+      padding: 18px;
+      border-radius: 6px;
+      margin: 20px 0;
+    }
+    .admin-box {
+      background: #f0fdf4;
+      border-left-color: #4ade80;
+      color: #166534;
+    }
+    ul { padding-left: 20px; }
+    li { margin: 8px 0; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">TechCorp</div>
+    <div class="nav">
+      <a href="#">Strona główna</a>
+      <a href="#">Zespół</a>
+      <a href="#">Wnioski</a>
+      <a href="#">IT Support</a>
+      <a href="#">Wyloguj</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="main-content">
+      
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <h3>Menu</h3>
+        <ul>
+          <li><strong>→ Mój profil</strong></li>
+          <li>Moje wnioski urlopowe</li>
+          <li>Delegacje służbowe</li>
+          <li>Dostęp do systemów</li>
+          <li>Raporty</li>
+          <li>Zmiana hasła</li>
+        </ul>
+
+        <hr style="margin: 25px 0;">
+        
+        <h4>Kontakt do działów</h4>
+        <p><strong>IT Support:</strong><br>
+           Piotr Wiśniewski (IT Administrator)<br>
+           Tel. wewnętrzny: 777</p>
+        
+        <p><strong>Dyrektor IT:</strong><br>
+           Karolina Zielińska</p>
+      </div>
+
+      <!-- Główna treść profilu -->
+      <div class="profile-info">
+        <h1 class="welcome">Witaj, <%= username %>!</h1>
+        <p style="color:#64748b;">Zalogowany od: <%= new Date().toLocaleDateString('pl-PL') %> • Dział: Techniczny</p>
+
+        <% if (isAdmin) { %>
+          <div class="info-box admin-box">
+            <h2>✅ Posiadasz uprawnienia administratorskie</h2>
+            <p>Gratulacje! Masz pełny dostęp do systemu.</p>
+            <h3>Flaga:</h3>
+            <strong style="font-size: 1.3em;"><%= flag %></strong>
+          </div>
+        <% } else { %>
+          <div class="info-box">
+            <p><strong>Twój poziom dostępu:</strong> Standardowy użytkownik</p>
+            <p>Aby uzyskać szersze uprawnienia, skontaktuj się z administratorem systemu.</p>
+          </div>
+
+          <div class="card">
+            <h3>Informacja dla zespołu</h3>
+            <p>W związku z audytem bezpieczeństwa, niektóre konta posiadają <strong>podwyższone uprawnienia administratorskie</strong>.</p>
+            <p>Osoby posiadające takie uprawnienia to m.in.:</p>
+            <ul>
+              <li><strong>Piotr Wiśniewski</strong> – IT Administrator</li>
+              <li><strong>Karolina Zielińska</strong> – Dyrektor IT</li>
+            </ul>
+          </div>
+        <% } %>
+
+        <div class="card">
+          <h3>Ostatnia aktywność</h3>
+          <ul>
+            <li>Logowanie z komputera biurowego • dzisiaj o 09:12</li>
+            <li>Zmiana statusu wniosku urlopowego • 2 dni temu</li>
+            <li>Dostęp do systemu ticketingowego • 3 dni temu</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>Szybkie akcje</h3>
+          <button style="padding:12px 20px; margin-right:10px; background:#1e40af; color:white; border:none; border-radius:6px; cursor:pointer;">
+            Złóż wniosek urlopowy
+          </button>
+          <button style="padding:12px 20px; background:#64748b; color:white; border:none; border-radius:6px; cursor:pointer;">
+            Zgłoś problem techniczny
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

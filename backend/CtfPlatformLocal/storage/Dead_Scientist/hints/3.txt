@@ -1,0 +1,2 @@
+15
+The encoded string in the script is not in its final form. Notice how it's used in the code- it gets reversed before decoding. Reverse the string, then decode it from Base64 to get the access code.

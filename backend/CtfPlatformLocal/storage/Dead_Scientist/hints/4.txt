@@ -1,0 +1,2 @@
+20
+The terminal reveals an encrypted transmission. The cipher is XOR and the key is the access code you just found. In CyberChef: first apply From Hex, then XOR with the key (UTF-8, Standard scheme).

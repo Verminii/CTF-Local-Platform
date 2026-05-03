@@ -1,0 +1,11 @@
+Archivists recovered a quarantined report from Raccoon City. They recognised some unusual markings during the review.
+Its pages contain notes, redirects, and hidden fragments that still need to be pieced together...
+
+You are given a single file: book.epub
+
+Your goal:
+Recover three fragments of the flag: A, B, and C.
+Submit your final answer in this exact format: flag{A_B_C}
+
+The fragments are independent, but together they form a sentence, so the order in which you solve them should not matter.
+Three hints are provided, each helps with one part of the challenge: 1=A, 2=B, 3=C. 

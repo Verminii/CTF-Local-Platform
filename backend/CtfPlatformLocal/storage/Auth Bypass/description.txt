@@ -1,0 +1,4 @@
+Dane do logowania:
+
+Login: regularuser
+Hasło: password123

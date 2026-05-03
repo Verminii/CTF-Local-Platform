@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}Main Hub{% endblock %}
+
+{% block content %}
+<section class="page-header">
+  <p class="eyebrow">Kasztanek Corporation</p>
+  <h1>CTF Challenges</h1>
+  <p class="page-subtitle">
+    Select a challenge and investigate the available files.
+  </p>
+</section>
+
+<div class="challenge-grid">
+  {% for item in challenge_cards %}
+    <article class="panel challenge-card {% if item.completed %}challenge-card-completed{% endif %}">
+      <div class="challenge-meta">
+        <span class="challenge-tag">Challenge {{ forloop.counter }}</span>
+        <span class="badge {% if item.completed %}bg-success{% else %}bg-primary{% endif %} ms-2">
+          {{ item.display_points }} pts
+        </span>
+      </div>
+
+      <h2 class="challenge-title">
+        {% if item.completed %}
+          {{ item.challenge.title }}
+        {% else %}
+          <a href="{% url 'challenge_detail' item.challenge.folder_name %}">
+            {{ item.challenge.title }}
+          </a>
+        {% endif %}
+      </h2>
+
+      <p class="challenge-description">
+        {{ item.challenge.short_description|truncatechars:140 }}
+      </p>
+
+      <div class="challenge-actions">
+        {% if item.completed %}
+          <span class="btn-re btn-re-primary" style="opacity: .7; pointer-events: none;">
+            Completed
+          </span>
+        {% else %}
+          <a href="{% url 'challenge_detail' item.challenge.folder_name %}" class="btn-re btn-re-primary">
+            Open challenge
+          </a>
+        {% endif %}
+      </div>
+    </article>
+  {% empty %}
+    <div class="panel empty-state">
+      <h2>No challenges available</h2>
+      <p>
+        Add challenge folders to the storage directory.
+      </p>
+    </div>
+  {% endfor %}
+</div>
+
+<style>
+.challenge-card-completed {
+  background: linear-gradient(135deg, rgba(57, 169, 107, 0.18), rgba(57, 169, 107, 0.08)) !important;
+  border: 1px solid rgba(57, 169, 107, 0.8) !important;
+  box-shadow: 0 0 0 1px rgba(57, 169, 107, 0.25), 0 10px 25px rgba(57, 169, 107, 0.12);
+}
+
+.challenge-card-completed .challenge-title,
+.challenge-card-completed .challenge-description,
+.challenge-card-completed .challenge-tag {
+  color: #39a96b !important;
+}
+
+.challenge-card-completed .badge {
+  background-color: #39a96b !important;
+}
+</style>
+{% endblock %}

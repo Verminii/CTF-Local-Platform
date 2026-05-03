@@ -1,0 +1,2 @@
+10
+Wykorzystaj filtrowanie po zlokalizowanym adresie MAC wykorzystanym w ataku.

@@ -1,0 +1,2 @@
+5
+Autor wspomniał coś o steganografii, ale przecież nie użyłby tej techniki dwa razy w jednym CTFie, prawda? ...prawda?
