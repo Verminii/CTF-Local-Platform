@@ -1,12 +1,15 @@
 from pathlib import Path
 
-from django.conf import settings
-from django.contrib.auth import authenticate, login as auth_login, logout
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
-from django.db.models import Sum
 from django.http import JsonResponse, Http404, FileResponse
 from django.shortcuts import render, redirect
+from .models import ToDoItem, Challenge
+from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.conf import settings
+from pathlib import Path
+from django.contrib.auth import logout
+import requests
 from django.db.models import Sum
 
 from .models import (
@@ -155,10 +158,23 @@ def challenge_detail(request, folder_name):
     except Challenge.DoesNotExist:
         raise Http404("Challenge not found")
 
-    files = []
     challenge_path = CHALLENGE_STORAGE / folder_name
-    resources_dir = challenge_path / 'resources'
+    if not challenge_path.exists():
+        raise Http404("Challenge folder not found")
 
+    # Check if challenge has Docker setup
+    docker_dir = challenge_path / 'docker'
+    challenge_has_docker = docker_dir.exists()
+
+    description_path = challenge_path / 'description.txt'
+    flag_path = challenge_path / 'flag' / 'flag.txt'
+    short_description_path = challenge_path / 'short_description.txt'
+    short_description = read_text_file(short_description_path)
+    resources_dir = challenge_path / 'resources'
+    hints_dir = challenge_path / 'hints'
+
+    description = read_text_file(description_path)
+    files = []
     if resources_dir.exists() and resources_dir.is_dir():
         for file_path in sorted(resources_dir.rglob('*')):
             if file_path.is_file():
@@ -169,27 +185,69 @@ def challenge_detail(request, folder_name):
                     'size': file_path.stat().st_size,
                 })
 
-    used_hint_ids = set(
-        ChallengeHintUse.objects.filter(
-            user=request.user,
-            challenge_hint__challenge=challenge,
-            used=True
-        ).values_list('challenge_hint_id', flat=True)
-    )
-
-    completed = ChallengeCompletion.objects.filter(
-        user=request.user,
-        challenge=challenge
-    ).first()
+    hints = []
+    if hints_dir.exists() and hints_dir.is_dir():
+        for hint_path in sorted(hints_dir.iterdir()):
+            if hint_path.is_file() and hint_path.suffix.lower() == '.txt':
+                hints.append({
+                    'id': hint_path.stem,
+                    'title': f'Hint {hint_path.stem}',
+                    'content': read_text_file(hint_path),
+                })
 
     return render(request, 'challenge_detail.html', {
         'challenge': challenge,
-        'description_text': challenge.description,
+        'description_text': description,
+        'short_description': short_description,
         'files': files,
-        'hints': challenge.hints.all().order_by('id'),
-        'used_hint_ids': used_hint_ids,
-        'completed': completed,
+        'hints': hints,
+        'challenge_has_docker': challenge_has_docker,
     })
+
+
+@login_required
+def start_challenge(request, folder_name):
+
+    print("Starting challenge:", folder_name)
+
+    if request.method != 'POST':
+        return JsonResponse({'message': 'Invalid method.'}, status=405)
+
+    try:
+        challenge = Challenge.objects.get(folder_name=folder_name)
+    except Challenge.DoesNotExist:
+        raise Http404('Challenge not found')
+
+    challenge_path = CHALLENGE_STORAGE / folder_name
+    if not (challenge_path / 'docker').exists():
+        return JsonResponse({'error': 'Challenge has no Docker setup.'}, status=400)
+    
+    username = request.user.username
+    print('start_challenge: user=', username, 'challenge=', folder_name)
+
+    try:
+        response = requests.post(
+            'http://orchestrator:5000/initialize_challenge',
+            json={'challenge_name': folder_name},
+            timeout=30
+        )
+        response_data = response.json()
+        print('orchestrator response:', response.status_code, response_data)
+    except requests.RequestException as e:
+        print('orchestrator request failed:', str(e))
+        return JsonResponse({'error': 'Orchestrator unavailable.', 'details': str(e)}, status=503)
+
+    try:
+        response = requests.post(
+            'http://orchestrator:5000/start_challenge',
+            json={'challenge_name': folder_name, 'user': username},
+            timeout=30
+        )
+        response_data = response.json()
+        print('orchestrator response:', response.status_code, response_data)
+        return JsonResponse(response_data, status=response.status_code)
+    except requests.RequestException as e:
+        return JsonResponse({'error': 'Orchestrator unavailable.', 'details': str(e)}, status=503)
 
 
 @login_required

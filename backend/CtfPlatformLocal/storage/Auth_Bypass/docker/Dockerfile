@@ -7,11 +7,11 @@ RUN addgroup -g 1001 -S nodejs && \
 WORKDIR /app
 
 # Skopiuj pliki package.json i zainstaluj zależności
-COPY package*.json ./
-RUN npm ci --only=production
+COPY resources/package*.json ./
+RUN npm install --only=production
 
 # Skopiuj resztę aplikacji
-COPY . .
+COPY resources .
 
 # Ustaw właściciela plików
 RUN chown -R nodejs:nodejs /app

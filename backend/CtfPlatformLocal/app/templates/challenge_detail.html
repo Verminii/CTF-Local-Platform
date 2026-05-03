@@ -11,6 +11,14 @@
   <p class="eyebrow">Challenge File System</p>
   <h1>{{ challenge.title }}</h1>
   <p class="page-subtitle" style="white-space: pre-line;">{{ description_text }}</p>
+  {% if challenge_has_docker %}
+  <form action="{% url 'start_challenge' challenge.folder_name %}" method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn-re btn-re-secondary" id="startChallengeBtn">
+      Start Challenge
+    </button>
+  </form>
+  {% endif %}
 </section>
 
 <div class="detail-layout">
@@ -133,6 +141,67 @@
 function getCsrfToken() {
   return document.querySelector('[name=csrfmiddlewaretoken]').value;
 }
+
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+  return null;
+}
+
+if (document.getElementById('startChallengeBtn')) {
+
+  document.getElementById('startChallengeBtn').addEventListener('click', async function() {
+    this.disabled = true;
+    this.innerText = 'Starting...';
+    console.log('Starting challenge...');
+    const formAction = this.closest('form').action;
+    console.log('Form action URL:', formAction);
+
+    console.log(formAction);
+
+    const response = await fetch(formAction, {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': getCookie('csrftoken')
+      }
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      this.innerText = 'Challenge Started on Port ' + data.port;
+      
+      let timeLeft = 15 * 60;
+
+      if (window.localStorage.getItem('challengeStarted')) {
+        timeLeft = window.localStorage.getItem('challengeStarted');
+      }else {
+        window.localStorage.setItem('challengeStarted', timeLeft);
+      }
+      
+      const originalText = this.innerText;
+      const timerInterval = setInterval(() => {
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          this.innerText = originalText + ' (Expired)';
+          this.disabled = true;
+        } else {
+          const minutes = Math.floor(timeLeft / 60);
+          const seconds = timeLeft % 60;
+          this.innerText = `${originalText} - Time Left: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+          timeLeft--;
+          window.localStorage.setItem('challengeStarted', timeLeft);
+        }
+      }, 1000);
+    } else {
+      this.innerText = 'Start Challenge';
+      this.disabled = false;
+      alert(data.message || 'Failed to start challenge. Please try again.');
+    }
+
+  
+})};
 
 document.querySelectorAll('.use-hint-btn').forEach(btn => {
   btn.addEventListener('click', async function () {

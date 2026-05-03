@@ -7,3 +7,19 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
+    depends_on:
+      - orchestrator
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  orchestrator:
+    build: ./orchestrator
+    ports:
+      - "5000:5000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock  
+      - ./backend/CtfPlatformLocal/storage:/storage 
+    environment:
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - PYTHONUNBUFFERED=1
+    stop_grace_period: 30s

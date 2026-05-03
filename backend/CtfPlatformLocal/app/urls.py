@@ -9,6 +9,7 @@ urlpatterns = [
     path('mainhub/', views.mainhub, name='mainhub'),
     path('challenge/<str:folder_name>/', views.challenge_detail, name='challenge_detail'),
     path('challenge/<str:folder_name>/submit-flag/', views.submit_flag, name='submit_flag'),
+    path('challenge/<str:folder_name>/start_challenge', views.start_challenge, name='start_challenge'),
     path('challenge/<str:folder_name>/download/<path:file_path>/', views.download_file, name='download_file'),
     path('logout/', views.user_logout, name='logout'),
     path('hint/<int:hint_id>/use/', views.use_hint, name='use_hint'),
