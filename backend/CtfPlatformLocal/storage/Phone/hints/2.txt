@@ -1,0 +1,2 @@
+15
+Szukaj kolorów w string i rozwiąż rebus

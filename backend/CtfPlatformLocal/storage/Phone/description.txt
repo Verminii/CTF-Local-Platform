@@ -1,0 +1,9 @@
+Z pozoru zwykła aplikacja okazuje się kolejnym porzuconym projektem, w którym coś poszło nie tak. Jej wnętrze jest niespójne, pełne śladów po ingerencjach i ukrytych mechanizmach, które nie powinny tam być. Każdy element wygląda, jakby miał coś do ukrycia, a dostęp do prawdy nie jest oczywisty.
+
+Gdzieś w tym wszystkim znajduje się dowód — flaga. Ukryta głęboko, zabezpieczona, czekająca aż ktoś odkryje, co naprawdę dzieje się za kulisami.
+
+Wymagane narzędzia:
+
+*apktool
+*Android Studio - Pixel 5 (Android 17.0)
+*Burp Suite

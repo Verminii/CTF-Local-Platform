@@ -7,11 +7,11 @@ RUN addgroup -g 1001 -S nodejs && \
 WORKDIR /app
 
 # Skopiuj pliki package.json i zainstaluj zależności
-COPY resources/package*.json ./
+COPY docker/package*.json ./
 RUN npm install --only=production
 
 # Skopiuj resztę aplikacji
-COPY resources .
+COPY docker/ ./
 
 # Ustaw właściciela plików
 RUN chown -R nodejs:nodejs /app
@@ -20,7 +20,7 @@ RUN chown -R nodejs:nodejs /app
 USER nodejs
 
 # Port będzie konfigurowany przez zmienną środowiskową
-ENV PORT=3000
+ENV PORT=80
 
 # Expose port (dla dokumentacji)
 EXPOSE $PORT
