@@ -1,0 +1,5 @@
+# Ignoruj pliki skompilowane Pythona
+*.pyc
+
+# Ignoruj bazy SQLite
+*.sqlite3
