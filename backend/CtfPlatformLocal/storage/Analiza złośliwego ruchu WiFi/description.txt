@@ -1,5 +1,3 @@
-Analiza złośliwego ruchu WiFi
-
 Otrzymano zgłoszenie, że jedno z urządzeń zakłóca działanie sieci WiFi. 
 Na podstawie danych zawartych w pliku capture.pcapng rozwiąż poniższe zadania, aby uzyskać flagę.
 
