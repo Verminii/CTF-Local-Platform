@@ -162,18 +162,12 @@ def challenge_detail(request, folder_name):
     if not challenge_path.exists():
         raise Http404("Challenge folder not found")
 
-    # Check if challenge has Docker setup
+    # Check if challenge has Docker setup ← DODAJ
     docker_dir = challenge_path / 'docker'
     challenge_has_docker = docker_dir.exists()
 
-    description_path = challenge_path / 'description.txt'
-    flag_path = challenge_path / 'flag' / 'flag.txt'
-    short_description_path = challenge_path / 'short_description.txt'
-    short_description = read_text_file(short_description_path)
+    # Files ← DODAJ
     resources_dir = challenge_path / 'resources'
-    hints_dir = challenge_path / 'hints'
-
-    description = read_text_file(description_path)
     files = []
     if resources_dir.exists() and resources_dir.is_dir():
         for file_path in sorted(resources_dir.rglob('*')):
@@ -181,28 +175,30 @@ def challenge_detail(request, folder_name):
                 rel_path = file_path.relative_to(challenge_path)
                 files.append({
                     'name': file_path.name,
-                    'path': str(rel_path).replace('\\', '/'),
+                    'path': str(rel_path).replace('\\\\', '/'),
                     'size': file_path.stat().st_size,
                 })
 
-    hints = []
-    if hints_dir.exists() and hints_dir.is_dir():
-        for hint_path in sorted(hints_dir.iterdir()):
-            if hint_path.is_file() and hint_path.suffix.lower() == '.txt':
-                hints.append({
-                    'id': hint_path.stem,
-                    'title': f'Hint {hint_path.stem}',
-                    'content': read_text_file(hint_path),
-                })
+    # Hints z DB (już masz) + DODAJ do context:
+    used_hint_ids = set(
+        ChallengeHintUse.objects.filter(
+            user=request.user,
+            challenge_hint__challenge=challenge,
+            used=True
+        ).values_list('challenge_hint_id', flat=True)
+    )
 
     return render(request, 'challenge_detail.html', {
         'challenge': challenge,
-        'description_text': description,
-        'short_description': short_description,
-        'files': files,
-        'hints': hints,
-        'challenge_has_docker': challenge_has_docker,
+        'description_text': challenge.description,
+        'files': files,  # ← DODAJ
+        'hints': challenge.hints.all().order_by('id'),
+        'used_hint_ids': used_hint_ids,  # ← DODAJ
+        'challenge_has_docker': challenge_has_docker,  # ← DODAJ
     })
+
+
+
 
 
 @login_required
