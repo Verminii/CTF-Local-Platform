@@ -1,0 +1,18 @@
+Resident Evil posiada bardzo rozbudowaną społeczność.
+Wiele osób aktywnie angażuje się we wszystko, co związane z ich ulubionym uniwersum.
+
+A gdzie najlepiej porozmawiać z innymi? Oczywiście na forum!
+Niestety, jak to bywa, nie jest ono pozbawione wad…
+
+Twoim celem jest odnalezienie luk w zabezpieczeniach i wykorzystanie ich tak, aby wykonać dowolny alert() na stronie głównej (liście postów).
+
+Dane logowania:
+
+login: TikiTaki
+hasło: tikitaki
+
+UWAGA!
+
+Flagę otrzymasz tylko jeśli wykonasz alert wykorzystując odnalezioną lukę w zabezpieczeniach forum. Modyfikacja kodu w inspektorze (np. dodanie onclick="alert(...)" w DevTools) nie dostarczy flagi :)
+
+Powodzenia!

@@ -1,0 +1,5 @@
+5
+Look carefully at the signature parameters. If two signatures share the same r, something critical may have been reused. 
+Recall that for two signatures (r, s1), (r, s2) on different messages:
+k = (z1 - z2)*(s1 - s2)^(-1) mod n
+Once k is known, recover the private key d using equation s1 = (z1 + r*d)*k^(-1) mod n

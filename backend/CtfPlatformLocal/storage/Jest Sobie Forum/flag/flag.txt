@@ -1,0 +1,1 @@
+flag{RE_jsfuck_beats_regular_js_every_time}

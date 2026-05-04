@@ -1,0 +1,4 @@
+The message is not what you hear, but what's beneath the surface.
+Hint: Least significant is most revealing. Look closely from START to end. Remember about headers.
+Tools you might find useful: xxd, Python
+Note: Audio playback is not required to solve this challenge. Command-line tools should be enough.

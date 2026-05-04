@@ -1,0 +1,17 @@
+Professor's Notes
+=================
+
+Candidates must solve at least one of the problems in the coded examination.
+Limit your work to clear and rigorous arguments; you may consult mathematical forums, books, articles, and other external references.
+Each problem originates from mathematical discussion archives.
+Only complete solutions will be considered for evaluation. Submissions consisting only of final results, without justification, will receive 0 points.
+
+All problems were collected from various mathematical forum discussions.
+Some original threads may no longer be active or may have been marked as [closed].
+
+Administrative note:
+You have 8 hours to solve one of the four problems.
+
+Archival note:
+Reference solutions were stored separately.
+One participant is known to have solved all four unusually quickly; part of the task is to determine their identity and to verify your own solutions accordingly.

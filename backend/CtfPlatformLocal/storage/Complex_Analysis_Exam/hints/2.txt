@@ -1,0 +1,3 @@
+10
+If a problem seems unfamiliar, try searching for it directly (some of them originate from public mathematical discussions). Image-based search may help you locate the original source quickly.
+If that fails, rewrite the problem (especially any integrals or formulas) in LaTeX form and search using that notation on mathematical forums.

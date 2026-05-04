@@ -1,0 +1,12 @@
+{
+  "curve": "secp256k1",
+  "message1": "internal archival release",
+  "message2": "candidate copy approved",
+  "z1_hex": "0x4be8ade06e8eca2c815be2b1c819662bb11c924ab0f3b3aecfb768fe09362515",
+  "z2_hex": "0xc47c814760d88cb03039c12862d9d2149fcd7a0a2b58660814c203a78f1f6aa9",
+  "r_hex": "0x88de3f5656dfe58a5afdce1ff2e09dc9d91ab23564b4b7e710907496c176a7c3",
+  "s1_hex": "0xdbca71816efeb98aa38dbc6812560ee64906e294e5993a59ff7d49b17324a3fd",
+  "s2_hex": "0x9d106e80403aaf2118cdeafe2231395ed84f6a4e8f060907a2e943ef81ae4cd2",
+  "exam_password_rule": "first 16 hexadecimal characters of SHA-256(private_key_bytes)"
+}
+
